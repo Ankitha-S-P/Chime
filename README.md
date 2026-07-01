@@ -2,7 +2,7 @@
 
 ```mermaid
 erDiagram
-    ... erDiagram
+erDiagram
     users {
         UUID id PK
         VARCHAR email UK
@@ -79,4 +79,5 @@ erDiagram
     rooms ||--o{ messages : "contains"
     messages |o--o{ messages : "reply_to"
 
+    ... (paste the diagram above)
 ```
