@@ -23,6 +23,7 @@
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/dto/response/RoomResponse.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/dto/response/TypingEvent.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/dto/response/UserResponse.java
+/Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/entity/AuditLog.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/entity/Message.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/entity/RefreshToken.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/entity/Room.java
@@ -31,6 +32,7 @@
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/entity/User.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/exception/AppException.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/exception/GlobalExceptionHandler.java
+/Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/repository/AuditLogRepository.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/repository/MessageRepository.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/repository/RefreshTokenRepository.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/repository/RoomMemberRepository.java
@@ -38,8 +40,12 @@
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/repository/UserRepository.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/security/JwtAuthFilter.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/security/JwtUtil.java
+/Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/security/RateLimitFilter.java
+/Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/AuditService.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/AuthService.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/MessageService.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/PresenceService.java
+/Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/RateLimiterService.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/RoomService.java
+/Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/SanitizationService.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/TokenBlacklistService.java

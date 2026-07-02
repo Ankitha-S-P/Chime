@@ -1,3 +1,4 @@
+com/ankitha/chime/service/RateLimiterService.class
 com/ankitha/chime/dto/response/TypingEvent.class
 com/ankitha/chime/entity/Room.class
 com/ankitha/chime/security/JwtUtil.class
@@ -6,6 +7,7 @@ com/ankitha/chime/entity/User$UserBuilder.class
 com/ankitha/chime/dto/response/RoomResponse$RoomResponseBuilder.class
 com/ankitha/chime/repository/RoomMemberRepository.class
 com/ankitha/chime/dto/response/UserResponse.class
+com/ankitha/chime/entity/AuditLog.class
 com/ankitha/chime/dto/response/RoomMemberResponse.class
 com/ankitha/chime/dto/request/InviteMemberRequest.class
 com/ankitha/chime/entity/Room$RoomType.class
@@ -22,9 +24,11 @@ com/ankitha/chime/repository/MessageRepository.class
 com/ankitha/chime/security/JwtAuthFilter.class
 com/ankitha/chime/dto/response/PagedMessagesResponse$PagedMessagesResponseBuilder.class
 com/ankitha/chime/entity/RefreshToken.class
+com/ankitha/chime/security/RateLimitFilter.class
 com/ankitha/chime/entity/Message.class
 com/ankitha/chime/dto/response/MessageResponse.class
 com/ankitha/chime/entity/Message$MessageType.class
+com/ankitha/chime/service/SanitizationService.class
 com/ankitha/chime/dto/response/AuthResponse$AuthResponseBuilder.class
 com/ankitha/chime/config/WebSocketAuthConfig$1.class
 com/ankitha/chime/exception/AppException.class
@@ -34,7 +38,9 @@ com/ankitha/chime/service/MessageService.class
 com/ankitha/chime/controller/MessageController.class
 com/ankitha/chime/entity/Message$MessageBuilder.class
 com/ankitha/chime/entity/RoomMember$MemberRole.class
+com/ankitha/chime/entity/AuditLog$AuditLogBuilder.class
 com/ankitha/chime/config/RedisConfig.class
+com/ankitha/chime/service/AuditService.class
 com/ankitha/chime/dto/request/CreateRoomRequest.class
 com/ankitha/chime/config/WebSocketEventListener.class
 com/ankitha/chime/dto/response/AuthResponse.class
@@ -58,3 +64,4 @@ com/ankitha/chime/exception/GlobalExceptionHandler.class
 com/ankitha/chime/dto/request/SendMessageRequest.class
 com/ankitha/chime/dto/response/PagedMessagesResponse.class
 com/ankitha/chime/dto/response/RoomMemberResponse$RoomMemberResponseBuilder.class
+com/ankitha/chime/repository/AuditLogRepository.class

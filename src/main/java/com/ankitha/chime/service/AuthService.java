@@ -17,8 +17,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.ankitha.chime.exception.AppException;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final TokenBlacklistService tokenBlacklistService;
+    private final AuditService auditService;
 
     @Value("${app.jwt.refresh-token-expiry}")
     private long refreshTokenExpiryMs;
@@ -36,10 +40,10 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already in use");
+            throw new AppException("Email already in use", HttpStatus.CONFLICT);
         }
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username already taken");
+            throw new AppException("Username already taken", HttpStatus.CONFLICT);
         }
 
         User user = User.builder()
@@ -50,24 +54,27 @@ public class AuthService {
                 .build();
 
         user = userRepository.save(user);
-
+        auditService.log("USER_REGISTER", "USER", user.getId(), user,
+                Map.of("email", user.getEmail(), "username", user.getUsername()));
         return buildAuthResponse(user, null);
     }
 
     @Transactional
     public AuthResponse login(LoginRequest request, HttpServletRequest httpRequest) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+                .orElseThrow(() -> new AppException("Invalid credentials", HttpStatus.BAD_REQUEST));
 
         if (!user.isActive()) {
-            throw new RuntimeException("Account is disabled");
+            throw new AppException("Account is disabled", HttpStatus.FORBIDDEN);
         }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new AppException("Invalid credentials", HttpStatus.BAD_REQUEST);
         }
 
         String deviceInfo = httpRequest.getHeader("User-Agent");
+        auditService.log("USER_LOGIN", "USER", user.getId(), user,
+                Map.of("email", user.getEmail()));
         return buildAuthResponse(user, deviceInfo);
     }
 
@@ -76,14 +83,14 @@ public class AuthService {
         String tokenHash = jwtUtil.hashToken(request.getRefreshToken());
 
         RefreshToken stored = refreshTokenRepository.findByTokenHash(tokenHash)
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                .orElseThrow(() -> new AppException("Invalid refresh token", HttpStatus.UNAUTHORIZED));
 
         if (stored.isRevoked()) {
-            throw new RuntimeException("Refresh token has been revoked");
+            throw new AppException("Refresh token has been revoked", HttpStatus.UNAUTHORIZED);
         }
 
         if (stored.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Refresh token has expired");
+            throw new AppException("Refresh token has expired", HttpStatus.UNAUTHORIZED);
         }
 
         // Token rotation: delete old token, issue new one

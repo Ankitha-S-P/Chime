@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,8 @@ public class MessageService {
     private final RoomRepository roomRepository;
     private final RoomMemberRepository roomMemberRepository;
     private final SimpMessagingTemplate messagingTemplate;
+    private final SanitizationService sanitizationService;
+    private final AuditService auditService;
 
     private static final int PAGE_SIZE = 50;
 
@@ -50,10 +53,11 @@ public class MessageService {
                     .orElseThrow(() -> new AppException("Reply target not found", HttpStatus.NOT_FOUND));
         }
 
+        String sanitizedContent = sanitizationService.sanitize(request.getContent());
         Message message = Message.builder()
                 .room(room)
                 .sender(sender)
-                .content(request.getContent())
+                .content(sanitizedContent)
                 .type(request.getType() != null ? request.getType() : Message.MessageType.TEXT)
                 .replyTo(replyTo)
                 .deleted(false)
@@ -131,6 +135,8 @@ public class MessageService {
         // Broadcast the deletion event
         messagingTemplate.convertAndSend("/topic/room." + roomId,
                 toMessageResponse(message));
+        auditService.log("MESSAGE_DELETE", "MESSAGE", messageId, currentUser,
+                Map.of("roomId", roomId.toString(), "deletedBy", currentUser.getUsername()));
     }
 
     private MessageResponse toMessageResponse(Message message) {
