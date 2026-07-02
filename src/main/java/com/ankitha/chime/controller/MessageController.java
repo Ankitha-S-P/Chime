@@ -19,6 +19,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import com.ankitha.chime.dto.response.TypingEvent;
+import java.util.Map;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+
 
 @RestController
 @RequestMapping("/api/rooms/{roomId}/messages")
@@ -26,6 +30,7 @@ import java.util.UUID;
 public class MessageController {
 
     private final MessageService messageService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     // REST endpoint — standard HTTP send
     @PostMapping
@@ -73,5 +78,25 @@ public class MessageController {
             @AuthenticationPrincipal User currentUser) {
         messageService.deleteMessage(roomId, messageId, currentUser);
         return ResponseEntity.noContent().build();
+    }
+    @MessageMapping("/typing.{roomId}")
+    public void handleTyping(
+            @DestinationVariable UUID roomId,
+            @Payload Map<String, Boolean> payload,
+            Principal principal) {
+
+        if (principal == null) return;
+
+        User sender = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+
+        TypingEvent event = new TypingEvent(
+                sender.getId(),
+                sender.getUsername(),
+                roomId,
+                Boolean.TRUE.equals(payload.get("typing"))
+        );
+
+        // Broadcast to room — no DB write, purely ephemeral
+        messagingTemplate.convertAndSend("/topic/room." + roomId + ".typing", event);
     }
 }

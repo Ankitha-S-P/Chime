@@ -3,6 +3,7 @@
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/config/SecurityConfig.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/config/WebSocketAuthConfig.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/config/WebSocketConfig.java
+/Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/config/WebSocketEventListener.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/controller/AuthController.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/controller/MessageController.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/controller/RoomController.java
@@ -20,6 +21,7 @@
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/dto/response/PagedMessagesResponse.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/dto/response/RoomMemberResponse.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/dto/response/RoomResponse.java
+/Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/dto/response/TypingEvent.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/dto/response/UserResponse.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/entity/Message.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/entity/RefreshToken.java
@@ -38,5 +40,6 @@
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/security/JwtUtil.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/AuthService.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/MessageService.java
+/Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/PresenceService.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/RoomService.java
 /Users/ankitha/Desktop/Chime/src/main/java/com/ankitha/chime/service/TokenBlacklistService.java

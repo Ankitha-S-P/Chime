@@ -1,3 +1,4 @@
+com/ankitha/chime/dto/response/TypingEvent.class
 com/ankitha/chime/entity/Room.class
 com/ankitha/chime/security/JwtUtil.class
 com/ankitha/chime/entity/Room$RoomBuilder.class
@@ -35,6 +36,7 @@ com/ankitha/chime/entity/Message$MessageBuilder.class
 com/ankitha/chime/entity/RoomMember$MemberRole.class
 com/ankitha/chime/config/RedisConfig.class
 com/ankitha/chime/dto/request/CreateRoomRequest.class
+com/ankitha/chime/config/WebSocketEventListener.class
 com/ankitha/chime/dto/response/AuthResponse.class
 com/ankitha/chime/config/WebSocketConfig.class
 com/ankitha/chime/entity/RefreshToken$RefreshTokenBuilder.class
@@ -51,6 +53,7 @@ com/ankitha/chime/dto/request/LogoutRequest.class
 com/ankitha/chime/entity/RoomMember$RoomMemberBuilder.class
 com/ankitha/chime/dto/request/RegisterRequest.class
 com/ankitha/chime/config/SecurityConfig.class
+com/ankitha/chime/service/PresenceService.class
 com/ankitha/chime/exception/GlobalExceptionHandler.class
 com/ankitha/chime/dto/request/SendMessageRequest.class
 com/ankitha/chime/dto/response/PagedMessagesResponse.class

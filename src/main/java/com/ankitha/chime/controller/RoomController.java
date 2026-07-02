@@ -13,9 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import com.ankitha.chime.repository.RoomMemberRepository;
+import com.ankitha.chime.service.PresenceService;
+import com.ankitha.chime.exception.AppException;
 
 import java.util.List;
 import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -23,6 +27,8 @@ import java.util.UUID;
 public class RoomController {
 
     private final RoomService roomService;
+    private final PresenceService presenceService;
+    private final RoomMemberRepository roomMemberRepository;
 
     @PostMapping
     public ResponseEntity<RoomResponse> createRoom(@Valid @RequestBody CreateRoomRequest request,
@@ -69,5 +75,22 @@ public class RoomController {
                                              @AuthenticationPrincipal User currentUser) {
         roomService.removeMember(roomId, userId, currentUser);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/{roomId}/members/online")
+    public ResponseEntity<List<UUID>> getOnlineMembers(
+            @PathVariable UUID roomId,
+            @AuthenticationPrincipal User currentUser) {
+
+        // Verify requester is a member
+        roomMemberRepository.findByRoomIdAndUserId(roomId, currentUser.getId())
+                .orElseThrow(() -> new AppException(
+                        "You are not a member of this room", HttpStatus.FORBIDDEN));
+
+        List<UUID> memberIds = roomMemberRepository.findByRoomId(roomId)
+                .stream()
+                .map(rm -> rm.getUser().getId())
+                .toList();
+
+        return ResponseEntity.ok(presenceService.getOnlineUserIds(memberIds));
     }
 }
