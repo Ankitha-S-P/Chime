@@ -1,18 +1,13 @@
 spring:
   datasource:
-    url: ${postgresql://neondb_owner:npg_2VmC7YpIqdUh@ep-soft-silence-atpvxkn0.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require}
-    driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
       minimum-idle: 1
       connection-timeout: 30000
-      ssl: true
 
   data:
     redis:
-      url: ${redis-cli --tls -u redis://default:gQAAAAAAAh4YAAIgcDE5NGY3MDM2MTAxYzA0NDZmYjBiMGRhODgwZjk3NDU0Yg@correct-termite-138776.upstash.io:6379}
-      ssl:
-        enabled: true
+      url: ${REDIS_URL}
 
   jpa:
     hibernate:
