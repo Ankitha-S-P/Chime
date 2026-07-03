@@ -5,6 +5,8 @@ export interface User {
   avatarUrl?: string;
 }
 
+export type { User as UserType };
+
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
@@ -39,4 +41,12 @@ export interface PagedMessages {
   messages: Message[];
   nextCursor?: string;
   hasMore: boolean;
+}
+
+export interface RoomMember {
+  userId: string;
+  username: string;
+  avatarUrl?: string;
+  role: 'ADMIN' | 'MEMBER';
+  joinedAt: string;
 }

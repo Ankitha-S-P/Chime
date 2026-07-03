@@ -93,4 +93,11 @@ public class RoomController {
 
         return ResponseEntity.ok(presenceService.getOnlineUserIds(memberIds));
     }
+
+    @PostMapping("/direct/{targetUserId}")
+    public ResponseEntity<RoomResponse> getOrCreateDirect(
+            @PathVariable UUID targetUserId,
+            @AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(roomService.getOrCreateDirectRoom(targetUserId, currentUser));
+    }
 }

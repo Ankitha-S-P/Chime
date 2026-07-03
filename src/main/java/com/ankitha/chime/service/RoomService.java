@@ -141,6 +141,47 @@ public class RoomService {
                 .toList();
     }
 
+    @Transactional
+    public RoomResponse getOrCreateDirectRoom(UUID targetUserId, User currentUser) {
+        User targetUser = userRepository.findById(targetUserId)
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+        // Check if a DIRECT room already exists between these two users
+        List<Room> myRooms = roomRepository.findAllByMemberId(currentUser.getId());
+        for (Room room : myRooms) {
+            if (room.getType() == Room.RoomType.DIRECT) {
+                List<RoomMember> members = roomMemberRepository.findByRoomId(room.getId());
+                boolean hasTarget = members.stream()
+                        .anyMatch(m -> m.getUser().getId().equals(targetUserId));
+                if (hasTarget && members.size() == 2) {
+                    return toRoomResponse(room);
+                }
+            }
+        }
+
+        // Create new DIRECT room atomically
+        Room room = Room.builder()
+                .name(null)
+                .type(Room.RoomType.DIRECT)
+                .createdBy(currentUser)
+                .build();
+        room = roomRepository.save(room);
+
+        roomMemberRepository.save(RoomMember.builder()
+                .id(new RoomMemberId(room.getId(), currentUser.getId()))
+                .room(room).user(currentUser)
+                .role(RoomMember.MemberRole.ADMIN)
+                .joinedAt(LocalDateTime.now()).build());
+
+        roomMemberRepository.save(RoomMember.builder()
+                .id(new RoomMemberId(room.getId(), targetUserId))
+                .room(room).user(targetUser)
+                .role(RoomMember.MemberRole.MEMBER)
+                .joinedAt(LocalDateTime.now()).build());
+
+        return toRoomResponse(room);
+    }
+
     // ── helpers ──────────────────────────────────────────────
 
     private Room findRoomOrThrow(UUID roomId) {

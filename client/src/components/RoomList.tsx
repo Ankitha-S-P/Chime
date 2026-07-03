@@ -4,54 +4,70 @@ interface Props {
   rooms: Room[];
   selectedRoomId: string | null;
   onSelect: (room: Room) => void;
-  onCreateRoom: () => void;
+  onCreateGroup: () => void;
+  onNewDM: () => void;
 }
 
-export default function RoomList({ rooms, selectedRoomId, onSelect, onCreateRoom }: Props) {
+export default function RoomList({ rooms, selectedRoomId, onSelect, onCreateGroup, onNewDM }: Props) {
+  const groups = rooms.filter(r => r.type === 'GROUP');
+  const dms = rooms.filter(r => r.type === 'DIRECT');
+
+  const RoomItem = ({ room }: { room: Room }) => (
+    <div
+      style={{
+        ...styles.item,
+        background: room.id === selectedRoomId ? '#3a3a3a' : 'transparent',
+      }}
+      onClick={() => onSelect(room)}
+    >
+      <div style={styles.roomIcon}>
+        {room.type === 'GROUP' ? '#' : '@'}
+      </div>
+      <p style={styles.roomName}>{room.name || 'Direct Message'}</p>
+    </div>
+  );
+
   return (
     <div style={styles.sidebar}>
-      <div style={styles.header}>
-        <span style={styles.title}>Chime</span>
-        <button style={styles.newBtn} onClick={onCreateRoom}>+</button>
+      {/* Groups */}
+      <div style={styles.section}>
+        <div style={styles.sectionHeader}>
+          <span style={styles.sectionLabel}>Channels</span>
+          <button style={styles.addBtn} onClick={onCreateGroup} title="New Group">+</button>
+        </div>
+        {groups.length === 0 && <p style={styles.empty}>No channels yet</p>}
+        {groups.map(room => <RoomItem key={room.id} room={room} />)}
       </div>
-      <div style={styles.list}>
-        {rooms.length === 0 && (
-          <p style={styles.empty}>No rooms yet. Create one!</p>
-        )}
-        {rooms.map(room => (
-          <div key={room.id}
-            style={{ ...styles.item,
-              background: room.id === selectedRoomId ? '#3a3a3a' : 'transparent' }}
-            onClick={() => onSelect(room)}>
-            <div style={styles.roomIcon}>
-              {room.type === 'GROUP' ? '#' : '@'}
-            </div>
-            <div>
-              <p style={styles.roomName}>{room.name || 'Direct Message'}</p>
-              <p style={styles.roomType}>{room.type}</p>
-            </div>
-          </div>
-        ))}
+
+      {/* Direct Messages */}
+      <div style={styles.section}>
+        <div style={styles.sectionHeader}>
+          <span style={styles.sectionLabel}>Direct Messages</span>
+          <button style={styles.addBtn} onClick={onNewDM} title="New DM">+</button>
+        </div>
+        {dms.length === 0 && <p style={styles.empty}>No DMs yet</p>}
+        {dms.map(room => <RoomItem key={room.id} room={room} />)}
       </div>
     </div>
   );
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  sidebar: { width:'240px', background:'#111', borderRight:'1px solid #222',
-    display:'flex', flexDirection:'column', height:'100vh' },
-  header: { padding:'16px', display:'flex', justifyContent:'space-between',
-    alignItems:'center', borderBottom:'1px solid #222' },
-  title: { color:'#fff', fontWeight:700, fontSize:'18px' },
-  newBtn: { background:'#5865f2', color:'#fff', border:'none', borderRadius:'6px',
-    width:'28px', height:'28px', cursor:'pointer', fontSize:'18px', lineHeight:'1' },
-  list: { flex:1, overflowY:'auto', padding:'8px' },
-  item: { display:'flex', alignItems:'center', gap:'10px', padding:'10px',
-    borderRadius:'8px', cursor:'pointer', marginBottom:'2px' },
-  roomIcon: { width:'36px', height:'36px', background:'#2a2a2a', borderRadius:'8px',
-    display:'flex', alignItems:'center', justifyContent:'center',
-    color:'#888', fontSize:'18px', flexShrink:0 },
-  roomName: { margin:0, color:'#fff', fontSize:'14px', fontWeight:500 },
-  roomType: { margin:0, color:'#888', fontSize:'11px' },
-  empty: { color:'#555', fontSize:'13px', textAlign:'center', marginTop:'20px' },
+  sidebar: { flex: 1, overflowY: 'auto', padding: '8px 0' },
+  section: { marginBottom: '8px' },
+  sectionHeader: { display: 'flex', justifyContent: 'space-between',
+    alignItems: 'center', padding: '8px 12px 4px' },
+  sectionLabel: { color: '#888', fontSize: '11px', fontWeight: 700,
+    textTransform: 'uppercase', letterSpacing: '0.5px' },
+  addBtn: { background: 'none', border: 'none', color: '#888',
+    cursor: 'pointer', fontSize: '18px', lineHeight: 1, padding: '0 2px' },
+  item: { display: 'flex', alignItems: 'center', gap: '8px',
+    padding: '6px 12px', borderRadius: '6px', cursor: 'pointer',
+    margin: '1px 8px' },
+  roomIcon: { width: '28px', height: '28px', background: '#2a2a2a',
+    borderRadius: '6px', display: 'flex', alignItems: 'center',
+    justifyContent: 'center', color: '#888', fontSize: '14px', flexShrink: 0 },
+  roomName: { margin: 0, color: '#ccc', fontSize: '14px',
+    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
+  empty: { color: '#555', fontSize: '12px', padding: '4px 12px' },
 };
