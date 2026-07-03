@@ -22,9 +22,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // WebSocket handshake endpoint — clients connect here
+        // Native WebSocket endpoint — used by React frontend
+        registry.addEndpoint("/ws")
+                .setAllowedOriginPatterns("*");
+
+        // SockJS fallback — for the HTML test file and older browsers
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*")
-                .withSockJS(); // SockJS fallback for browsers that don't support WS
+                .withSockJS();
     }
 }

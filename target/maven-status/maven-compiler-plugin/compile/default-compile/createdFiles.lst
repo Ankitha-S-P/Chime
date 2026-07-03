@@ -25,6 +25,7 @@ com/ankitha/chime/security/JwtAuthFilter.class
 com/ankitha/chime/dto/response/PagedMessagesResponse$PagedMessagesResponseBuilder.class
 com/ankitha/chime/entity/RefreshToken.class
 com/ankitha/chime/security/RateLimitFilter.class
+com/ankitha/chime/config/CorsConfig.class
 com/ankitha/chime/entity/Message.class
 com/ankitha/chime/dto/response/MessageResponse.class
 com/ankitha/chime/entity/Message$MessageType.class

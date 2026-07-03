@@ -1,4 +1,5 @@
 /Users/ankitha/Chime/src/main/java/com/ankitha/chime/ChimeApplication.java
+/Users/ankitha/Chime/src/main/java/com/ankitha/chime/config/CorsConfig.java
 /Users/ankitha/Chime/src/main/java/com/ankitha/chime/config/RedisConfig.java
 /Users/ankitha/Chime/src/main/java/com/ankitha/chime/config/SecurityConfig.java
 /Users/ankitha/Chime/src/main/java/com/ankitha/chime/config/WebSocketAuthConfig.java
