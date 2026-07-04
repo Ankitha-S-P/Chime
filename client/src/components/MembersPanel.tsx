@@ -31,10 +31,15 @@ export default function MembersPanel({ room, onClose, onLeave, currentUserRole }
       getOnlineMembers(room.id),
     ]);
     if (membersResult.status === 'fulfilled') {
+      console.log('[MembersPanel] members loaded:', membersResult.value.data);
       setMembers(membersResult.value.data);
+    } else {
+      console.error('[MembersPanel] getMembers failed:', membersResult.reason);
     }
     if (onlineResult.status === 'fulfilled') {
       setOnlineIds(new Set(onlineResult.value.data));
+    } else {
+      console.warn('[MembersPanel] getOnlineMembers failed (non-critical):', onlineResult.reason);
     }
   };
 

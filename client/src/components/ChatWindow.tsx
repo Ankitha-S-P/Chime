@@ -73,9 +73,13 @@ export default function ChatWindow({ room, onLeaveRoom }: Props) {
   }, [room.id]);
 
   const loadCurrentUserRole = async () => {
-    const { data } = await getMembers(room.id);
-    const me = data.find(m => m.userId === currentUser?.id);
-    setCurrentUserRole(me?.role ?? 'MEMBER');
+    try {
+      const { data } = await getMembers(room.id);
+      const me = data.find(m => m.userId === currentUser?.id);
+      setCurrentUserRole(me?.role ?? 'MEMBER');
+    } catch (err) {
+      console.error('[ChatWindow] loadCurrentUserRole failed:', err);
+    }
   };
 
   const loadMessages = async (cursor?: string) => {
