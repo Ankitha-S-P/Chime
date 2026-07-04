@@ -26,17 +26,25 @@ export default function MembersPanel({ room, onClose, onLeave, currentUserRole }
   }, [room.id]);
 
   const loadMembers = async () => {
-    const [membersRes, onlineRes] = await Promise.all([
+    const [membersResult, onlineResult] = await Promise.allSettled([
       getMembers(room.id),
       getOnlineMembers(room.id),
     ]);
-    setMembers(membersRes.data);
-    setOnlineIds(new Set(onlineRes.data));
+    if (membersResult.status === 'fulfilled') {
+      setMembers(membersResult.value.data);
+    }
+    if (onlineResult.status === 'fulfilled') {
+      setOnlineIds(new Set(onlineResult.value.data));
+    }
   };
 
   const loadOnline = async () => {
-    const { data } = await getOnlineMembers(room.id);
-    setOnlineIds(new Set(data));
+    try {
+      const { data } = await getOnlineMembers(room.id);
+      setOnlineIds(new Set(data));
+    } catch {
+      // presence is best-effort — don't crash if Redis is unavailable
+    }
   };
 
   const handleRemove = async (userId: string) => {
