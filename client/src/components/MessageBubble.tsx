@@ -34,7 +34,7 @@ export default function MessageBubble({ message, onDelete, onReply, isAdmin }: P
             ↩
           </button>
           {canDelete && (
-            <button style={{ ...styles.actionBtn, color: '#f44747' }}
+            <button style={{ ...styles.actionBtn, color: '#f87171' }}
               onClick={() => onDelete(message.id)} title="Delete">
               ✕
             </button>
@@ -53,7 +53,10 @@ export default function MessageBubble({ message, onDelete, onReply, isAdmin }: P
 
         <div style={{
           ...styles.bubble,
-          background: isOwn ? '#5865f2' : '#2a2a2a',
+          background: isOwn
+            ? 'linear-gradient(135deg, #5b21b6, #7c3aed)'
+            : '#13122c',
+          border: isOwn ? 'none' : '1px solid #2e2b56',
           borderRadius: isOwn ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
         }}>
           {!isOwn && !message.deleted && (
@@ -63,7 +66,7 @@ export default function MessageBubble({ message, onDelete, onReply, isAdmin }: P
           <p style={{
             ...styles.content,
             fontStyle: message.deleted ? 'italic' : 'normal',
-            color: message.deleted ? 'rgba(255,255,255,0.4)' : '#fff',
+            color: message.deleted ? 'rgba(196,181,253,0.35)' : '#ede9fe',
           }}>
             {message.content}
           </p>
@@ -84,19 +87,19 @@ const styles: Record<string, React.CSSProperties> = {
   wrapper: { display: 'flex', alignItems: 'flex-end', marginBottom: '4px',
     paddingInline: '16px' },
   actions: { display: 'flex', gap: '4px', alignItems: 'center' },
-  actionBtn: { background: '#2a2a2a', border: 'none', color: '#aaa',
+  actionBtn: { background: '#1a1834', border: '1px solid #2e2b56', color: '#c4b5fd',
     cursor: 'pointer', borderRadius: '6px', padding: '4px 8px',
     fontSize: '14px', lineHeight: 1 },
   replyPreview: { display: 'flex', alignItems: 'center', gap: '4px',
     marginBottom: '2px', maxWidth: '280px' },
-  replyIcon: { color: '#888', fontSize: '12px' },
-  replyText: { color: '#888', fontSize: '12px', overflow: 'hidden',
+  replyIcon: { color: '#7c3aed', fontSize: '12px' },
+  replyText: { color: '#8b89b0', fontSize: '12px', overflow: 'hidden',
     textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '240px' },
   bubble: { maxWidth: '320px', padding: '8px 12px' },
-  sender: { margin: '0 0 2px', fontSize: '12px', color: '#a0a0a0', fontWeight: 600 },
+  sender: { margin: '0 0 2px', fontSize: '12px', color: '#a78bfa', fontWeight: 600 },
   content: { margin: 0, fontSize: '14px', lineHeight: 1.5, wordBreak: 'break-word' },
   meta: { display: 'flex', gap: '6px', alignItems: 'center', marginTop: '3px',
     justifyContent: 'flex-end' },
-  time: { fontSize: '11px', color: 'rgba(255,255,255,0.35)' },
-  edited: { fontSize: '11px', color: 'rgba(255,255,255,0.35)' },
+  time: { fontSize: '11px', color: 'rgba(196,181,253,0.4)' },
+  edited: { fontSize: '11px', color: 'rgba(196,181,253,0.4)' },
 };

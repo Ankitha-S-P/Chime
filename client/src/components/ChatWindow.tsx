@@ -10,9 +10,10 @@ import MembersPanel from './MembersPanel';
 interface Props {
   room: Room;
   onLeaveRoom: () => void;
+  onBack?: () => void;
 }
 
-export default function ChatWindow({ room, onLeaveRoom }: Props) {
+export default function ChatWindow({ room, onLeaveRoom, onBack }: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [replyTo, setReplyTo] = useState<Message | null>(null);
@@ -141,11 +142,14 @@ export default function ChatWindow({ room, onLeaveRoom }: Props) {
         {/* Header */}
         <div style={styles.header}>
           <div style={styles.headerLeft}>
+            {onBack && (
+              <button style={styles.backBtn} onClick={onBack} title="Back">←</button>
+            )}
             <span style={styles.roomIcon}>{room.type === 'GROUP' ? '#' : '@'}</span>
             <span style={styles.roomName}>{dmName}</span>
           </div>
           <button
-            style={{ ...styles.membersBtn, background: showMembers ? '#3a3a3a' : 'none' }}
+            style={{ ...styles.membersBtn, background: showMembers ? '#221f42' : 'none' }}
             onClick={() => setShowMembers(s => !s)}
             title="Members"
           >
@@ -220,31 +224,34 @@ export default function ChatWindow({ room, onLeaveRoom }: Props) {
 const styles: Record<string, React.CSSProperties> = {
   outer: { flex: 1, display: 'flex', overflow: 'hidden' },
   container: { flex: 1, display: 'flex', flexDirection: 'column', height: '100vh',
-    background: '#0f0f0f', overflow: 'hidden' },
-  header: { padding: '12px 20px', borderBottom: '1px solid #222', background: '#111',
+    background: '#07061a', overflow: 'hidden' },
+  header: { padding: '12px 20px', borderBottom: '1px solid #2e2b56', background: '#0e0d24',
     display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 },
   headerLeft: { display: 'flex', alignItems: 'center', gap: '8px' },
-  roomIcon: { color: '#888', fontSize: '18px' },
-  roomName: { color: '#fff', fontWeight: 600, fontSize: '16px' },
-  membersBtn: { border: 'none', color: '#aaa', cursor: 'pointer',
+  backBtn: { background: 'none', border: 'none', color: '#c4b5fd',
+    cursor: 'pointer', fontSize: '20px', lineHeight: 1, padding: '0 4px 0 0' },
+  roomIcon: { color: '#8b89b0', fontSize: '18px' },
+  roomName: { color: '#ede9fe', fontWeight: 600, fontSize: '16px' },
+  membersBtn: { border: 'none', color: '#c4b5fd', cursor: 'pointer',
     borderRadius: '6px', padding: '6px 12px', fontSize: '13px' },
   messages: { flex: 1, overflowY: 'auto', paddingBlock: '12px' },
   loadMore: { display: 'block', margin: '0 auto 12px', padding: '6px 16px',
-    background: '#2a2a2a', color: '#aaa', border: 'none', borderRadius: '6px',
-    cursor: 'pointer', fontSize: '13px' },
-  inputArea: { padding: '8px 16px 12px', borderTop: '1px solid #222',
-    background: '#111', flexShrink: 0 },
-  typing: { margin: '0 0 4px', fontSize: '12px', color: '#888', fontStyle: 'italic' },
+    background: '#1a1834', color: '#8b89b0', border: '1px solid #2e2b56',
+    borderRadius: '6px', cursor: 'pointer', fontSize: '13px' },
+  inputArea: { padding: '8px 16px 12px', borderTop: '1px solid #2e2b56',
+    background: '#0e0d24', flexShrink: 0 },
+  typing: { margin: '0 0 4px', fontSize: '12px', color: '#9966ff', fontStyle: 'italic' },
   replyBar: { display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    background: '#1a1a1a', borderLeft: '3px solid #5865f2', padding: '6px 10px',
+    background: '#13122c', borderLeft: '3px solid #7c3aed', padding: '6px 10px',
     borderRadius: '4px', marginBottom: '6px' },
-  replyBarText: { color: '#aaa', fontSize: '12px', overflow: 'hidden',
+  replyBarText: { color: '#c4b5fd', fontSize: '12px', overflow: 'hidden',
     textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '90%' },
-  replyBarClose: { background: 'none', border: 'none', color: '#888',
+  replyBarClose: { background: 'none', border: 'none', color: '#8b89b0',
     cursor: 'pointer', fontSize: '16px', lineHeight: 1, flexShrink: 0 },
   inputRow: { display: 'flex', gap: '8px' },
-  input: { flex: 1, padding: '10px 14px', borderRadius: '8px', border: '1px solid #333',
-    background: '#1a1a1a', color: '#fff', fontSize: '14px' },
-  sendBtn: { padding: '10px 20px', borderRadius: '8px', background: '#5865f2',
+  input: { flex: 1, padding: '10px 14px', borderRadius: '8px', border: '1px solid #2e2b56',
+    background: '#13122c', color: '#ede9fe', fontSize: '14px' },
+  sendBtn: { padding: '10px 20px', borderRadius: '8px',
+    background: 'linear-gradient(135deg, #7c3aed, #9966ff)',
     color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 },
 };

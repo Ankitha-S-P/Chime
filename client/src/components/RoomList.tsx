@@ -16,15 +16,21 @@ export default function RoomList({ rooms, selectedRoomId, onSelect, onCreateGrou
     <div
       style={{
         ...styles.item,
-        background: room.id === selectedRoomId ? '#3a3a3a' : 'transparent',
+        background: room.id === selectedRoomId ? '#221f42' : 'transparent',
+        borderLeft: room.id === selectedRoomId ? '2px solid #7c3aed' : '2px solid transparent',
       }}
       onClick={() => onSelect(room)}
     >
       <div style={styles.roomIcon}>
         {room.type === 'GROUP' ? '#' : '@'}
       </div>
-      <p style={styles.roomName}>
-        {room.type === 'DIRECT' ? (room.otherUsername ?? room.name ?? 'Direct Message') : room.name}
+      <p style={{
+        ...styles.roomName,
+        color: room.id === selectedRoomId ? '#ede9fe' : '#9d96c5',
+      }}>
+        {room.type === 'DIRECT'
+          ? (room.otherUsername ?? room.name ?? 'Direct Message')
+          : room.name}
       </p>
     </div>
   );
@@ -59,17 +65,19 @@ const styles: Record<string, React.CSSProperties> = {
   section: { marginBottom: '8px' },
   sectionHeader: { display: 'flex', justifyContent: 'space-between',
     alignItems: 'center', padding: '8px 12px 4px' },
-  sectionLabel: { color: '#888', fontSize: '11px', fontWeight: 700,
-    textTransform: 'uppercase', letterSpacing: '0.5px' },
-  addBtn: { background: 'none', border: 'none', color: '#888',
-    cursor: 'pointer', fontSize: '18px', lineHeight: 1, padding: '0 2px' },
+  sectionLabel: { color: '#6b5fa0', fontSize: '11px', fontWeight: 700,
+    textTransform: 'uppercase', letterSpacing: '0.8px' },
+  addBtn: { background: 'none', border: 'none', color: '#6b5fa0',
+    cursor: 'pointer', fontSize: '18px', lineHeight: 1, padding: '0 2px',
+    transition: 'color 0.15s' },
   item: { display: 'flex', alignItems: 'center', gap: '8px',
-    padding: '6px 12px', borderRadius: '6px', cursor: 'pointer',
-    margin: '1px 8px' },
-  roomIcon: { width: '28px', height: '28px', background: '#2a2a2a',
+    padding: '6px 10px 6px 12px', borderRadius: '6px', cursor: 'pointer',
+    margin: '1px 6px', transition: 'background 0.15s' },
+  roomIcon: { width: '26px', height: '26px', background: '#13122c',
     borderRadius: '6px', display: 'flex', alignItems: 'center',
-    justifyContent: 'center', color: '#888', fontSize: '14px', flexShrink: 0 },
-  roomName: { margin: 0, color: '#ccc', fontSize: '14px',
+    justifyContent: 'center', color: '#7c3aed', fontSize: '13px',
+    fontWeight: 700, flexShrink: 0 },
+  roomName: { margin: 0, fontSize: '14px',
     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
-  empty: { color: '#555', fontSize: '12px', padding: '4px 12px' },
+  empty: { color: '#3d3660', fontSize: '12px', padding: '4px 14px' },
 };
