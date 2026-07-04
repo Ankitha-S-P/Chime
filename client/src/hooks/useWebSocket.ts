@@ -30,9 +30,10 @@ export const useWebSocket = ({ roomId, onMessage, onTyping }: UseWebSocketProps)
 
     console.log('[WS] Connecting for room:', roomId);
 
-    const wsBase = (import.meta.env.VITE_API_URL || 'http://localhost:8080')
-      .replace('https://', 'wss://')
-      .replace('http://', 'ws://');
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const wsBase = apiUrl
+      ? apiUrl.replace('https://', 'wss://').replace('http://', 'ws://')
+      : `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}`;
     const client = new Client({
       brokerURL: `${wsBase}/ws/websocket`,
       connectHeaders: { Authorization: `Bearer ${accessToken}` },

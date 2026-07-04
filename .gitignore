@@ -13,8 +13,6 @@ target/
 # Environment / secrets
 .env
 .env.local
-.env.production
-client/.env.production
 client/.env.local
 
 # Node
