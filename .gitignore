@@ -1,1 +1,25 @@
-git add .client/.env.production
+# Maven build output
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Environment / secrets
+.env
+.env.local
+.env.production
+client/.env.production
+client/.env.local
+
+# Node
+client/node_modules/
+client/dist/
+
+# Logs
+*.log
