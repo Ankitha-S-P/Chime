@@ -23,7 +23,9 @@ export default function RoomList({ rooms, selectedRoomId, onSelect, onCreateGrou
       <div style={styles.roomIcon}>
         {room.type === 'GROUP' ? '#' : '@'}
       </div>
-      <p style={styles.roomName}>{room.name || 'Direct Message'}</p>
+      <p style={styles.roomName}>
+        {room.type === 'DIRECT' ? (room.otherUsername ?? room.name ?? 'Direct Message') : room.name}
+      </p>
     </div>
   );
 

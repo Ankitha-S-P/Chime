@@ -126,7 +126,9 @@ export default function ChatWindow({ room, onLeaveRoom }: Props) {
   const typingList = Array.from(typingUsers);
 
   const dmName = room.type === 'DIRECT'
-    ? messages.find(m => m.senderId !== currentUser?.id)?.senderUsername || 'Direct Message'
+    ? (room.otherUsername
+        ?? messages.find(m => m.senderId !== currentUser?.id)?.senderUsername
+        ?? 'Direct Message')
     : room.name;
 
   return (

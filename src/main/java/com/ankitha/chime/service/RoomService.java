@@ -62,7 +62,7 @@ public class RoomService {
     public List<RoomResponse> getMyRooms(User currentUser) {
         return roomRepository.findAllByMemberId(currentUser.getId())
                 .stream()
-                .map(this::toRoomResponse)
+                .map(room -> toRoomResponseForUser(room, currentUser.getId()))
                 .toList();
     }
 
@@ -179,7 +179,7 @@ public class RoomService {
                 .role(RoomMember.MemberRole.MEMBER)
                 .joinedAt(LocalDateTime.now()).build());
 
-        return toRoomResponse(room);
+        return toRoomResponseWithOther(room, targetUser.getUsername());
     }
 
     // ── helpers ──────────────────────────────────────────────
@@ -211,6 +211,32 @@ public class RoomService {
                 .createdAt(room.getCreatedAt())
                 .updatedAt(room.getUpdatedAt())
                 .build();
+    }
+
+    private RoomResponse toRoomResponseWithOther(Room room, String otherUsername) {
+        return RoomResponse.builder()
+                .id(room.getId())
+                .name(room.getName())
+                .description(room.getDescription())
+                .type(room.getType())
+                .createdBy(room.getCreatedBy().getId())
+                .otherUsername(otherUsername)
+                .createdAt(room.getCreatedAt())
+                .updatedAt(room.getUpdatedAt())
+                .build();
+    }
+
+    private RoomResponse toRoomResponseForUser(Room room, UUID currentUserId) {
+        if (room.getType() == Room.RoomType.DIRECT) {
+            List<RoomMember> members = roomMemberRepository.findByRoomId(room.getId());
+            String otherUsername = members.stream()
+                    .filter(m -> !m.getUser().getId().equals(currentUserId))
+                    .map(m -> m.getUser().getUsername())
+                    .findFirst()
+                    .orElse("Direct Message");
+            return toRoomResponseWithOther(room, otherUsername);
+        }
+        return toRoomResponse(room);
     }
 
     private RoomMemberResponse toMemberResponse(RoomMember member) {

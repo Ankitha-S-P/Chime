@@ -19,6 +19,7 @@ export interface Room {
   description?: string;
   type: 'DIRECT' | 'GROUP';
   createdBy: string;
+  otherUsername?: string;
   createdAt: string;
   updatedAt: string;
 }

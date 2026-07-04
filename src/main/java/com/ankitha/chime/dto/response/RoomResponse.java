@@ -15,6 +15,7 @@ public class RoomResponse {
     private String description;
     private Room.RoomType type;
     private UUID createdBy;
+    private String otherUsername;   // populated for DIRECT rooms — the other person's name
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
