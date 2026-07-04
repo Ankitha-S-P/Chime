@@ -1,11 +1,9 @@
 package com.ankitha.chime.controller;
 
-import com.ankitha.chime.dto.request.LoginRequest;
-import com.ankitha.chime.dto.request.LogoutRequest;
-import com.ankitha.chime.dto.request.RefreshTokenRequest;
-import com.ankitha.chime.dto.request.RegisterRequest;
+import com.ankitha.chime.dto.request.*;
 import com.ankitha.chime.dto.response.AuthResponse;
 import com.ankitha.chime.service.AuthService;
+import com.ankitha.chime.service.PasswordResetService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +19,7 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+    private final PasswordResetService passwordResetService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
@@ -47,5 +46,20 @@ public class AuthController {
 
         authService.logout(request, accessToken);
         return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Map<String, String>> forgotPassword(
+            @Valid @RequestBody ForgotPasswordRequest request) {
+        passwordResetService.forgotPassword(request);
+        return ResponseEntity.ok(Map.of("message",
+                "If that email is registered, a reset code has been sent"));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, String>> resetPassword(
+            @Valid @RequestBody ResetPasswordRequest request) {
+        passwordResetService.resetPassword(request);
+        return ResponseEntity.ok(Map.of("message", "Password reset successfully"));
     }
 }

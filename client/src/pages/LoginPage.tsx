@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { login } from '../api/auth';
 import { useAuthStore } from '../store/authStore';
 
@@ -10,6 +10,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { setAuth } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
+  const successMessage = (location.state as any)?.message as string | undefined;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +34,7 @@ export default function LoginPage() {
         <div style={styles.logo}>✦</div>
         <h1 style={styles.title}>Chime</h1>
         <p style={styles.subtitle}>Sign in to your account</p>
+        {successMessage && <p style={styles.success}>{successMessage}</p>}
         <form onSubmit={handleSubmit} style={styles.form}>
           <input style={styles.input} type="email" placeholder="Email"
             value={email} onChange={e => setEmail(e.target.value)} required />
@@ -41,6 +44,7 @@ export default function LoginPage() {
           <button style={styles.button} type="submit" disabled={loading}>
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
+          <Link to="/forgot-password" style={styles.forgotLink}>Forgot password?</Link>
         </form>
         <p style={styles.link}>
           Don't have an account? <Link to="/register" style={styles.linkAnchor}>Register</Link>
@@ -67,7 +71,12 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'linear-gradient(135deg, #7c3aed, #9966ff)',
     color: '#fff', border: 'none', cursor: 'pointer', fontSize: '15px',
     fontWeight: 700, marginTop: '4px' },
+  success: { color: '#34d399', fontSize: '13px', textAlign: 'center',
+    background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.2)',
+    borderRadius: '6px', padding: '8px', margin: '0 0 4px' },
   error: { color: '#f87171', fontSize: '13px', margin: 0 },
+  forgotLink: { color: '#8b89b0', fontSize: '12px', textAlign: 'center',
+    textDecoration: 'none', marginTop: '-4px' },
   link: { color: '#8b89b0', textAlign: 'center', marginTop: '20px',
     fontSize: '13px', marginBottom: 0 },
   linkAnchor: { color: '#a78bfa', textDecoration: 'none', fontWeight: 600 },
