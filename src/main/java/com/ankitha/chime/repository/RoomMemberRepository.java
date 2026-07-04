@@ -13,10 +13,10 @@ import java.util.UUID;
 @Repository
 public interface RoomMemberRepository extends JpaRepository<RoomMember, RoomMemberId> {
 
-    @Query("SELECT rm FROM RoomMember rm JOIN FETCH rm.user WHERE rm.room.id = :roomId")
+    @Query("SELECT rm FROM RoomMember rm JOIN FETCH rm.user WHERE rm.id.roomId = :roomId")
     List<RoomMember> findByRoomId(UUID roomId);
 
-    @Query("SELECT rm FROM RoomMember rm JOIN FETCH rm.user WHERE rm.room.id = :roomId AND rm.user.id = :userId")
+    @Query("SELECT rm FROM RoomMember rm JOIN FETCH rm.user WHERE rm.id.roomId = :roomId AND rm.id.userId = :userId")
     Optional<RoomMember> findByRoomIdAndUserId(UUID roomId, UUID userId);
 
     @Query("""
