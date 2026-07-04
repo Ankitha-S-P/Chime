@@ -16,5 +16,6 @@ spring:
 
 logging:
   level:
-    com.ankitha: INFO
-    org.springframework.security: WARN
+    com.ankitha: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web.cors: DEBUG
